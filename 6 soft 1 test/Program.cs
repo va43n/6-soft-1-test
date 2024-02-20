@@ -94,37 +94,34 @@ namespace _6_soft_1_test
         public static string alphabet = "0123456789ABCDEF";
         public static int maxLength = 36;
 
-        public string firstNumber = "";
+        public string firstNumber = "0";
         private bool hasDelimeter = false;
 
         public string EditSomething(int tag)
         {
-            if (tag == 0 && firstNumber == "")
-                return "0";
-            else if (tag < 16)
-                firstNumber += alphabet[tag];
+            if (tag < 16)
+                firstNumber = firstNumber == "0" ? alphabet[tag].ToString() : firstNumber + alphabet[tag];
+
             else if (tag == 16 && !hasDelimeter)
             {
                 hasDelimeter = true;
-                if (firstNumber == "")
-                    firstNumber = "0.";
-                else
-                    firstNumber += ".";
+                firstNumber += ".";
             }
             else if (tag == 17)
             {
-                if (firstNumber == "")
-                    return "0";
-                if (firstNumber[firstNumber.Length - 1] == '.')
+                if (firstNumber.Length == 1)
+                {
+                    firstNumber = "0";
+                    return firstNumber;
+                }
+                else if (firstNumber[firstNumber.Length - 1] == '.')
                     hasDelimeter = false;
                 firstNumber = firstNumber.Remove(firstNumber.Length - 1, 1);
-                if (firstNumber == "")
-                    return "0";
             }
             else if (tag == 18)
             {
                 hasDelimeter = false;
-                firstNumber = "";
+                firstNumber = "0";
                 return "0";
             }
 
@@ -140,8 +137,7 @@ namespace _6_soft_1_test
                     hasDelimeter = false;
                 firstNumber = firstNumber.Remove(i, 1);
             }
-            if (firstNumber == "")
-                return "0";
+
             return firstNumber;
         }
 
@@ -244,10 +240,8 @@ namespace _6_soft_1_test
                 }
 
                 St = State.Converted;
-                if (editor.firstNumber == "")
-                    history.AddRecord(p1, p2, "0", "0");
-                else
-                    history.AddRecord(p1, p2, editor.firstNumber, number_p2);
+                history.AddRecord(p1, p2, editor.firstNumber, number_p2);
+
                 return number_p2;
             }
             else
